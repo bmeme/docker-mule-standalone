@@ -1,0 +1,29 @@
+{
+    "include": 
+    [
+      {
+        "name": "4.5.0-11",
+        "mule_version": "4.5.0",
+        "java_version": "11",
+        "latest": true
+      },
+      {
+        "name": "4.5.0-8",
+        "mule_version": "4.5.0",
+        "java_version": "8",
+        "latest": false
+      },
+      {
+        "name": "4.4.0-11",
+        "mule_version": "4.4.0",
+        "java_version": "11",
+        "latest": false
+      },
+      {
+        "name": "4.4.0-8",
+        "mule_version": "4.4.0",
+        "java_version": "8",
+        "latest": false
+      }
+    ]
+  }
