@@ -1,0 +1,67 @@
+name: CI Bmeme Mule Standalone container images
+on:
+  push:
+    branches:
+      - "main"
+
+env:
+  registry: docker.io
+  repository: bmeme/mule-standalone
+
+jobs:
+
+  configure:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - 
+        name: Checkout to repository
+        uses: actions/checkout@v3
+      -
+        name: Set matrix data
+        id: set-matrix
+        run: echo "matrix=$(jq -c . < ./config.json)" >> $GITHUB_OUTPUT
+
+  build:
+    name: Build and test Bmeme Mule Standalone container images using Docker
+    runs-on: ubuntu-latest
+    needs: configure
+    strategy:
+      matrix: ${{ fromJson(needs.configure.outputs.matrix) }}
+    env:
+      dockerfile: ${{ matrix.mule_version }}/${{ matrix.java_version }}/Dockerfile
+      main_tag: ${{ matrix.name }}
+    steps:
+      - 
+        name: Check out the codebase.
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build images
+        run: |
+          {
+            docker build \
+              -t ${{ env.registry }}/${{ env.repository }}:${{ env.main_tag }} \
+              -f ${{ env.dockerfile }} .; \
+            
+            if ${{ matrix.latest }}; then
+              docker build -t ${{ env.registry }}/${{ env.repository }}:latest \
+                 -f ${{ env.dockerfile }} .; \
+            fi
+          }
+      -
+        name: Push images to Docker Hub
+        id: push
+        run: |
+          {
+            docker push ${{ env.registry }}/${{ env.repository }}:${{ env.main_tag }}; \
+            if ${{ matrix.latest }}; then
+              docker push ${{ env.registry }}/${{ env.repository }}:latest;
+            fi
+          }
