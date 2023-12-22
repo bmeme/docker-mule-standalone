@@ -9,6 +9,11 @@ RUN set -eux; \
         tar xzf /home/curl_user/mule-standalone-${MULE_VERSION}.tar.gz
 
 FROM eclipse-temurin:8
+LABEL   com.bmeme.project.family='Mule Standalone Docker Image' \
+        com.bmeme.project.version='4.4.0-8' \
+        com.bmeme.maintainer.1='Daniele Piaggesi <daniele.piaggesi@bmeme.com>' \
+        com.bmeme.maintainer.2='Roberto Mariani <roberto.mariani@bmeme.com>' \
+        com.bmeme.refreshedat='2023-11-22'
 
 ENV MULE_HOME=/opt/mule
 ENV MULE_USER=mule
