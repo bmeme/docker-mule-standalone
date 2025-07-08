@@ -2,10 +2,22 @@
     "include": 
     [
       {
+        "name": "4.6.3-17",
+        "mule_version": "4.6.3",
+        "java_version": "17",
+        "latest": true
+      },
+      {
+        "name": "4.6.3-11",
+        "mule_version": "4.6.3",
+        "java_version": "11",
+        "latest": false
+      },
+      {
         "name": "4.5.0-11",
         "mule_version": "4.5.0",
         "java_version": "11",
-        "latest": true
+        "latest": false
       },
       {
         "name": "4.5.0-8",
